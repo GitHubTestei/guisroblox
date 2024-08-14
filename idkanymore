@@ -1,0 +1,189 @@
+-- Existing Rainbow GUI setup
+local ScreenGui = Instance.new("ScreenGui")
+local Border = Instance.new("ImageLabel")
+local Frame = Instance.new("ImageLabel")
+local TextLabel = Instance.new("TextLabel")
+local ExecuteButton = Instance.new("TextButton")
+local ToggleDropPropButton = Instance.new("TextButton") -- New button to toggle the DropPropGui
+
+-- Parent the ScreenGui to the CoreGui to ensure it's always visible
+ScreenGui.Name = "RainbowGui"
+ScreenGui.Parent = game.CoreGui
+
+-- Create the Border
+Border.Name = "Border"
+Border.Parent = ScreenGui
+Border.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Border.BackgroundTransparency = 1
+Border.BorderSizePixel = 0
+Border.Position = UDim2.new(0.385, 0, 0.25, 0)
+Border.Size = UDim2.new(0, 250, 0, 250)
+Border.Image = "rbxassetid://3570695787"
+Border.ImageColor3 = Color3.fromRGB(0, 0, 0)
+Border.ScaleType = Enum.ScaleType.Slice
+Border.SliceCenter = Rect.new(100, 100, 100, 100)
+Border.SliceScale = 0.12
+Border.Selectable = true
+Border.Draggable = true
+Border.Active = true
+
+-- Create the Frame
+Frame.Name = "Frame"
+Frame.Parent = Border
+Frame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Frame.BackgroundTransparency = 1
+Frame.BorderSizePixel = 0
+Frame.Position = UDim2.new(0.023, 0, 0.023, 0)
+Frame.Size = UDim2.new(0, 238, 0, 238)
+Frame.Image = "rbxassetid://3570695787"
+Frame.ImageColor3 = Color3.fromRGB(40, 40, 40)
+Frame.ScaleType = Enum.ScaleType.Slice
+Frame.SliceCenter = Rect.new(100, 100, 100, 100)
+Frame.SliceScale = 0.12
+
+-- Create the Title TextLabel
+TextLabel.Parent = Frame
+TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+TextLabel.BackgroundTransparency = 1
+TextLabel.Size = UDim2.new(0, 238, 0, 30)
+TextLabel.Font = Enum.Font.Creepster
+TextLabel.Text = "Rainbow GUI"
+TextLabel.TextColor3 = Color3.fromRGB(255, 0, 127)
+TextLabel.TextScaled = true
+TextLabel.TextSize = 14
+TextLabel.TextWrapped = true
+
+-- Create the Execute Button
+ExecuteButton.Name = "ExecuteButton"
+ExecuteButton.Parent = Frame
+ExecuteButton.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+ExecuteButton.BorderSizePixel = 0
+ExecuteButton.Position = UDim2.new(0.184, 0, 0.865, 0)
+ExecuteButton.Size = UDim2.new(0, 150, 0, 25)
+ExecuteButton.Font = Enum.Font.Code
+ExecuteButton.Text = "Run Script"
+ExecuteButton.TextColor3 = Color3.fromRGB(255, 0, 127)
+ExecuteButton.TextScaled = true
+ExecuteButton.TextSize = 14
+ExecuteButton.TextWrapped = true
+
+-- Create the Toggle Button for DropPropGui
+ToggleDropPropButton.Name = "ToggleDropPropButton"
+ToggleDropPropButton.Parent = Frame
+ToggleDropPropButton.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+ToggleDropPropButton.BorderSizePixel = 0
+ToggleDropPropButton.Position = UDim2.new(0.184, 0, 0.7, 0) -- Adjust position as needed
+ToggleDropPropButton.Size = UDim2.new(0, 150, 0, 25)
+ToggleDropPropButton.Font = Enum.Font.Code
+ToggleDropPropButton.Text = "Toggle Drop Prop GUI"
+ToggleDropPropButton.TextColor3 = Color3.fromRGB(255, 0, 127)
+ToggleDropPropButton.TextScaled = true
+ToggleDropPropButton.TextSize = 14
+ToggleDropPropButton.TextWrapped = true
+
+-- Function to create rainbow effect on borders
+local function createRainbowBorders()
+    local function zigzag(X) return math.acos(math.cos(X * math.pi)) / math.pi end
+    local counter = 0
+
+    local function updateBorderColor()
+        while wait(0.1) do
+            Border.ImageColor3 = Color3.fromHSV(zigzag(counter), 1, 1)
+            counter = counter + 0.01
+        end
+    end
+
+    coroutine.wrap(updateBorderColor)()
+end
+
+-- Function to execute the script
+local function executeScript()
+    local url = "https://raw.githubusercontent.com/GitHubTestei/Yessier/main/rainbowfinalfinale6"
+    local success, result = pcall(function()
+        loadstring(game:HttpGet(url))()
+    end)
+    if not success then
+        warn("Failed to load script from URL: " .. result)
+    end
+end
+
+-- Function to toggle DropPropGui visibility
+local function toggleDropPropGui()
+    local dropPropGui = game.CoreGui:FindFirstChild("DropPropGui")
+    if dropPropGui then
+        dropPropGui.Visible = not dropPropGui.Visible
+    else
+        -- Create DropPropGui if it does not exist
+        local dropPropScreenGui = Instance.new("ScreenGui")
+        dropPropScreenGui.Name = "DropPropGui"
+        dropPropScreenGui.Parent = game.CoreGui
+        
+        local dropPropFrame = Instance.new("Frame")
+        dropPropFrame.Name = "DropPropFrame"
+        dropPropFrame.Parent = dropPropScreenGui
+        dropPropFrame.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+        dropPropFrame.Position = UDim2.new(0.5, -100, 0.5, -75)
+        dropPropFrame.Size = UDim2.new(0, 200, 0, 150)
+        
+        local dropPropTextBox = Instance.new("TextBox")
+        dropPropTextBox.Name = "DropPropTextBox"
+        dropPropTextBox.Parent = dropPropFrame
+        dropPropTextBox.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        dropPropTextBox.Size = UDim2.new(0, 180, 0, 30)
+        dropPropTextBox.Position = UDim2.new(0.1, 0, 0.2, 0)
+        dropPropTextBox.PlaceholderText = "Enter Prop ID"
+
+        local dropPropButton = Instance.new("TextButton")
+        dropPropButton.Name = "DropPropButton"
+        dropPropButton.Parent = dropPropFrame
+        dropPropButton.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+        dropPropButton.Position = UDim2.new(0.1, 0, 0.6, 0)
+        dropPropButton.Size = UDim2.new(0, 180, 0, 30)
+        dropPropButton.Text = "Drop Prop"
+        dropPropButton.TextColor3 = Color3.fromRGB(255, 0, 127)
+        dropPropButton.TextScaled = true
+
+        -- Connect DropPropButton click event
+        dropPropButton.MouseButton1Click:Connect(function()
+            local propId = tonumber(dropPropTextBox.Text)
+            if propId and propId > 0 then
+                local dropCount = 2
+                for i = 1, dropCount do
+                    local args = {
+                        [1] = {
+                            ["itemId"] = propId
+                        }
+                    }
+                    game:GetService("ReplicatedStorage"):WaitForChild("AskDoPlayerDropItem"):FireServer(unpack(args))
+                    
+                    local args = {
+                        [1] = "Prop",
+                        [2] = 1,
+                        [3] = true,
+                        [4] = true
+                    }
+                    game:GetService("ReplicatedStorage"):WaitForChild("ChangeAssetEvent"):FireServer(unpack(args))
+                    
+                    local args = {
+                        [1] = "Prop",
+                        [2] = propId
+                    }
+                    game:GetService("ReplicatedStorage"):WaitForChild("ChangeAssetEvent"):FireServer(unpack(args))
+                end
+            else
+                warn("Invalid Prop ID")
+            end
+        end)
+
+        dropPropScreenGui.Visible = true
+    end
+end
+
+-- Connect button click event to execute the script
+ExecuteButton.MouseButton1Click:Connect(executeScript)
+
+-- Connect button click event to toggle the DropPropGui
+ToggleDropPropButton.MouseButton1Click:Connect(toggleDropPropGui)
+
+-- Call the function to create rainbow borders
+createRainbowBorders()
