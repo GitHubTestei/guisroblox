@@ -1,0 +1,200 @@
+-- Create the ScreenGui
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "RainbowGui"
+ScreenGui.Parent = game.CoreGui
+
+-- Create the Border
+local Border = Instance.new("ImageLabel")
+Border.Name = "Border"
+Border.Parent = ScreenGui
+Border.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Border.BackgroundTransparency = 1
+Border.BorderSizePixel = 0
+Border.Position = UDim2.new(0.385, 0, 0.25, 0)
+Border.Size = UDim2.new(0, 250, 0, 250)
+Border.Image = "rbxassetid://3570695787"
+Border.ImageColor3 = Color3.fromRGB(0, 0, 0)
+Border.ScaleType = Enum.ScaleType.Slice
+Border.SliceCenter = Rect.new(100, 100, 100, 100)
+Border.SliceScale = 0.12
+Border.Selectable = true
+Border.Draggable = true
+Border.Active = true
+
+-- Create the Frame (menu)
+local Frame = Instance.new("ImageLabel")
+Frame.Name = "Frame"
+Frame.Parent = Border
+Frame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Frame.BackgroundTransparency = 1
+Frame.BorderSizePixel = 0
+Frame.Position = UDim2.new(0.023, 0, 0.023, 0)
+Frame.Size = UDim2.new(0, 238, 0, 238)
+Frame.Image = "rbxassetid://3570695787"
+Frame.ImageColor3 = Color3.fromRGB(40, 40, 40)
+Frame.ScaleType = Enum.ScaleType.Slice
+Frame.SliceCenter = Rect.new(100, 100, 100, 100)
+Frame.SliceScale = 0.12
+
+-- Create the Title TextLabel
+local TextLabel = Instance.new("TextLabel")
+TextLabel.Parent = Frame
+TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+TextLabel.BackgroundTransparency = 1
+TextLabel.Size = UDim2.new(0, 238, 0, 30)
+TextLabel.Font = Enum.Font.Creepster
+TextLabel.Text = "Gacha Online"
+TextLabel.TextColor3 = Color3.fromRGB(255, 0, 127)
+TextLabel.TextScaled = true
+TextLabel.TextSize = 14
+TextLabel.TextWrapped = true
+
+-- Create the Prop ID TextBox
+local PropIDTextBox = Instance.new("TextBox")
+PropIDTextBox.Name = "PropIDTextBox"
+PropIDTextBox.Parent = Frame
+PropIDTextBox.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+PropIDTextBox.BorderSizePixel = 0
+PropIDTextBox.Position = UDim2.new(0.079, 0, 0.2, 0)
+PropIDTextBox.Size = UDim2.new(0, 200, 0, 25)
+PropIDTextBox.Font = Enum.Font.SourceSans
+PropIDTextBox.Text = ""
+PropIDTextBox.TextColor3 = Color3.fromRGB(255, 0, 127)
+PropIDTextBox.TextScaled = true
+PropIDTextBox.TextSize = 14
+PropIDTextBox.TextWrapped = true
+PropIDTextBox.PlaceholderText = "Enter Prop ID"
+
+-- Create the Drop Button
+local DropButton = Instance.new("TextButton")
+DropButton.Name = "DropButton"
+DropButton.Parent = Frame
+DropButton.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+DropButton.BorderSizePixel = 0
+DropButton.Position = UDim2.new(0.2, 0, 0.265, 0) -- Positioned below the Prop ID TextBox
+DropButton.Size = UDim2.new(0, 120, 0, 30)  -- Smaller size
+DropButton.Font = Enum.Font.Code
+DropButton.Text = "Drop Prop"
+DropButton.TextColor3 = Color3.fromRGB(255, 255, 255) -- White text
+DropButton.TextScaled = true
+DropButton.TextSize = 14
+DropButton.TextWrapped = true
+
+-- Create the Execute Button
+local ExecuteButton = Instance.new("TextButton")
+ExecuteButton.Name = "ExecuteButton"
+ExecuteButton.Parent = Frame
+ExecuteButton.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+ExecuteButton.BorderSizePixel = 0
+ExecuteButton.Position = UDim2.new(0.2, 0, 0.8, 0) -- Adjusted for a smaller size
+ExecuteButton.Size = UDim2.new(0, 120, 0, 30)  -- Smaller size
+ExecuteButton.Font = Enum.Font.Code
+ExecuteButton.Text = "Rainbowize Character!"
+ExecuteButton.TextColor3 = Color3.fromRGB(255, 255, 255) -- White text
+ExecuteButton.TextScaled = true
+ExecuteButton.TextSize = 12
+ExecuteButton.TextWrapped = true
+
+-- Create the Toggle Button
+local ToggleButton = Instance.new("TextButton")
+ToggleButton.Name = "ToggleButton"
+ToggleButton.Parent = ScreenGui
+ToggleButton.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+ToggleButton.BorderSizePixel = 0
+ToggleButton.Position = UDim2.new(0.05, 0, 0.05, 0)
+ToggleButton.Size = UDim2.new(0, 80, 0, 40) -- Smaller size
+ToggleButton.Font = Enum.Font.Code
+ToggleButton.Text = "Toggle Menu"
+ToggleButton.TextColor3 = Color3.fromRGB(255, 255, 255) -- White text
+ToggleButton.TextScaled = true
+ToggleButton.TextSize = 14
+ToggleButton.TextWrapped = true
+
+-- Function to create rainbow effect on elements
+local function createRainbowEffect(element)
+    local function zigzag(X) return math.acos(math.cos(X * math.pi)) / math.pi end
+    local counter = 0
+
+    local function updateColor()
+        while wait(0.1) do
+            if element:IsA("TextButton") then
+                element.BackgroundColor3 = Color3.fromHSV(zigzag(counter), 1, 1)
+                element.TextColor3 = Color3.fromHSV(zigzag(counter), 1, 1)
+            elseif element:IsA("ImageLabel") then
+                element.ImageColor3 = Color3.fromHSV(zigzag(counter), 1, 1)
+            end
+            counter = counter + 0.01
+        end
+    end
+
+    coroutine.wrap(updateColor)()
+end
+
+-- Function to toggle visibility of the entire menu
+local function toggleMenu()
+    Border.Visible = not Border.Visible
+end
+
+-- Function to drop prop based on Prop ID
+local function dropProp()
+    local propID = tonumber(PropIDTextBox.Text)
+    if propID then
+        local dropCount = 2
+
+        for i = 1, dropCount do
+            local args = {
+                [1] = {
+                    ["itemId"] = propID
+                }
+            }
+
+            game:GetService("ReplicatedStorage"):WaitForChild("AskDoPlayerDropItem"):FireServer(unpack(args))
+
+            local args = {
+                [1] = "Prop",
+                [2] = 1,
+                [3] = true,
+                [4] = true
+            }
+
+            game:GetService("ReplicatedStorage"):WaitForChild("ChangeAssetEvent"):FireServer(unpack(args))
+
+            local args = {
+                [1] = "Prop",
+                [2] = propID
+            }
+
+            game:GetService("ReplicatedStorage"):WaitForChild("ChangeAssetEvent"):FireServer(unpack(args))
+        end
+    else
+        warn("Invalid Prop ID")
+    end
+end
+
+-- Function to execute the rainbow script
+local function executeScript()
+    local url = "https://raw.githubusercontent.com/GitHubTestei/Yessier/main/rainbowfinalfinale6"
+    local success, result = pcall(function()
+        loadstring(game:HttpGet(url))()
+    end)
+    if not success then
+        warn("Failed to load script from URL: " .. result)
+    end
+end
+
+-- Function to close the menu
+local function closeMenu()
+    Border.Visible = false
+end
+
+-- Connect Button Click Events
+ToggleButton.MouseButton1Click:Connect(toggleMenu)
+DropButton.MouseButton1Click:Connect(dropProp)
+ExecuteButton.MouseButton1Click:Connect(executeScript)
+
+-- Apply rainbow effect to the Border, Frame, ToggleButton, DropButton, and ExecuteButton
+createRainbowEffect(Border)
+createRainbowEffect(Frame)
+createRainbowEffect(ToggleButton)
+createRainbowEffect(DropButton)
+createRainbowEffect(ExecuteButton)
