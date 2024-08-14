@@ -1,0 +1,98 @@
+local ScreenGui = Instance.new("ScreenGui")
+local Border = Instance.new("ImageLabel")
+local Frame = Instance.new("ImageLabel")
+local TextLabel = Instance.new("TextLabel")
+local ExecuteButton = Instance.new("TextButton")
+
+-- Parent the ScreenGui to the CoreGui to ensure it's always visible
+ScreenGui.Name = "RainbowGui"
+ScreenGui.Parent = game.CoreGui
+
+-- Create the Border
+Border.Name = "Border"
+Border.Parent = ScreenGui
+Border.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Border.BackgroundTransparency = 1
+Border.BorderSizePixel = 0
+Border.Position = UDim2.new(0.385, 0, 0.25, 0)
+Border.Size = UDim2.new(0, 250, 0, 250)
+Border.Image = "rbxassetid://3570695787"
+Border.ImageColor3 = Color3.fromRGB(0, 0, 0)
+Border.ScaleType = Enum.ScaleType.Slice
+Border.SliceCenter = Rect.new(100, 100, 100, 100)
+Border.SliceScale = 0.12
+Border.Selectable = true
+Border.Draggable = true
+Border.Active = true
+
+-- Create the Frame
+Frame.Name = "Frame"
+Frame.Parent = Border
+Frame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Frame.BackgroundTransparency = 1
+Frame.BorderSizePixel = 0
+Frame.Position = UDim2.new(0.023, 0, 0.023, 0)
+Frame.Size = UDim2.new(0, 238, 0, 238)
+Frame.Image = "rbxassetid://3570695787"
+Frame.ImageColor3 = Color3.fromRGB(40, 40, 40)
+Frame.ScaleType = Enum.ScaleType.Slice
+Frame.SliceCenter = Rect.new(100, 100, 100, 100)
+Frame.SliceScale = 0.12
+
+-- Create the Title TextLabel
+TextLabel.Parent = Frame
+TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+TextLabel.BackgroundTransparency = 1
+TextLabel.Size = UDim2.new(0, 238, 0, 30)
+TextLabel.Font = Enum.Font.Creepster
+TextLabel.Text = "Rainbow GUI"
+TextLabel.TextColor3 = Color3.fromRGB(255, 0, 127)
+TextLabel.TextScaled = true
+TextLabel.TextSize = 14
+TextLabel.TextWrapped = true
+
+-- Create the Execute Button
+ExecuteButton.Name = "ExecuteButton"
+ExecuteButton.Parent = Frame
+ExecuteButton.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+ExecuteButton.BorderSizePixel = 0
+ExecuteButton.Position = UDim2.new(0.184, 0, 0.865, 0)
+ExecuteButton.Size = UDim2.new(0, 150, 0, 25)
+ExecuteButton.Font = Enum.Font.Code
+ExecuteButton.Text = "Run Script"
+ExecuteButton.TextColor3 = Color3.fromRGB(255, 0, 127)
+ExecuteButton.TextScaled = true
+ExecuteButton.TextSize = 14
+ExecuteButton.TextWrapped = true
+
+-- Function to create rainbow effect on borders
+local function createRainbowBorders()
+    local function zigzag(X) return math.acos(math.cos(X * math.pi)) / math.pi end
+    local counter = 0
+
+    local function updateBorderColor()
+        while wait(0.1) do
+            Border.ImageColor3 = Color3.fromHSV(zigzag(counter), 1, 1)
+            counter = counter + 0.01
+        end
+    end
+
+    coroutine.wrap(updateBorderColor)()
+end
+
+-- Function to execute the script
+local function executeScript()
+    local url = "https://raw.githubusercontent.com/GitHubTestei/Yessier/main/rainbowfinalfinale6"
+    local success, result = pcall(function()
+        loadstring(game:HttpGet(url))()
+    end)
+    if not success then
+        warn("Failed to load script from URL: " .. result)
+    end
+end
+
+-- Connect button click event to execute the script
+ExecuteButton.MouseButton1Click:Connect(executeScript)
+
+-- Call the function to create rainbow borders
+createRainbowBorders()
