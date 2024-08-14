@@ -1,0 +1,122 @@
+-- Create the ScreenGui
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "RainbowGui"
+ScreenGui.Parent = game.CoreGui
+
+-- Create the Border
+local Border = Instance.new("ImageLabel")
+Border.Name = "Border"
+Border.Parent = ScreenGui
+Border.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Border.BackgroundTransparency = 1
+Border.BorderSizePixel = 0
+Border.Position = UDim2.new(0.385, 0, 0.25, 0)
+Border.Size = UDim2.new(0, 250, 0, 250)
+Border.Image = "rbxassetid://3570695787"
+Border.ImageColor3 = Color3.fromRGB(0, 0, 0)
+Border.ScaleType = Enum.ScaleType.Slice
+Border.SliceCenter = Rect.new(100, 100, 100, 100)
+Border.SliceScale = 0.12
+Border.Selectable = true
+Border.Draggable = true
+Border.Active = true
+
+-- Create the Frame (menu)
+local Frame = Instance.new("ImageLabel")
+Frame.Name = "Frame"
+Frame.Parent = Border
+Frame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Frame.BackgroundTransparency = 1
+Frame.BorderSizePixel = 0
+Frame.Position = UDim2.new(0.023, 0, 0.023, 0)
+Frame.Size = UDim2.new(0, 238, 0, 238)
+Frame.Image = "rbxassetid://3570695787"
+Frame.ImageColor3 = Color3.fromRGB(40, 40, 40)
+Frame.ScaleType = Enum.ScaleType.Slice
+Frame.SliceCenter = Rect.new(100, 100, 100, 100)
+Frame.SliceScale = 0.12
+
+-- Create the Title TextLabel
+local TextLabel = Instance.new("TextLabel")
+TextLabel.Parent = Frame
+TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+TextLabel.BackgroundTransparency = 1
+TextLabel.Size = UDim2.new(0, 238, 0, 30)
+TextLabel.Font = Enum.Font.Creepster
+TextLabel.Text = "Rainbow GUI"
+TextLabel.TextColor3 = Color3.fromRGB(255, 0, 127)
+TextLabel.TextScaled = true
+TextLabel.TextSize = 14
+TextLabel.TextWrapped = true
+
+-- Create the Execute Button
+local ExecuteButton = Instance.new("TextButton")
+ExecuteButton.Name = "ExecuteButton"
+ExecuteButton.Parent = Frame
+ExecuteButton.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+ExecuteButton.BorderSizePixel = 0
+ExecuteButton.Position = UDim2.new(0.184, 0, 0.865, 0)
+ExecuteButton.Size = UDim2.new(0, 150, 0, 25)
+ExecuteButton.Font = Enum.Font.Code
+ExecuteButton.Text = "Run Script"
+ExecuteButton.TextColor3 = Color3.fromRGB(255, 0, 127)
+ExecuteButton.TextScaled = true
+ExecuteButton.TextSize = 14
+ExecuteButton.TextWrapped = true
+
+-- Create the Toggle Button
+local ToggleButton = Instance.new("TextButton")
+ToggleButton.Name = "ToggleButton"
+ToggleButton.Parent = ScreenGui
+ToggleButton.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+ToggleButton.BorderSizePixel = 0
+ToggleButton.Position = UDim2.new(0.05, 0, 0.05, 0)
+ToggleButton.Size = UDim2.new(0, 100, 0, 50)
+ToggleButton.Font = Enum.Font.Code
+ToggleButton.Text = "Toggle Menu"
+ToggleButton.TextColor3 = Color3.fromRGB(255, 0, 127)
+ToggleButton.TextScaled = true
+ToggleButton.TextSize = 14
+ToggleButton.TextWrapped = true
+
+-- Function to create rainbow effect on elements
+local function createRainbowEffect(element)
+    local function zigzag(X) return math.acos(math.cos(X * math.pi)) / math.pi end
+    local counter = 0
+
+    local function updateColor()
+        while wait(0.1) do
+            element.BackgroundColor3 = Color3.fromHSV(zigzag(counter), 1, 1)
+            element.ImageColor3 = Color3.fromHSV(zigzag(counter), 1, 1)
+            counter = counter + 0.01
+        end
+    end
+
+    coroutine.wrap(updateColor)()
+end
+
+-- Function to toggle visibility of the entire menu
+local function toggleMenu()
+    -- Toggle the visibility of the Border (which includes the Frame)
+    Border.Visible = not Border.Visible
+end
+
+-- Connect ToggleButton click event
+ToggleButton.MouseButton1Click:Connect(toggleMenu)
+
+-- Connect ExecuteButton click event
+local function executeScript()
+    local url = "https://raw.githubusercontent.com/GitHubTestei/Yessier/main/rainbowfinalfinale6"
+    local success, result = pcall(function()
+        loadstring(game:HttpGet(url))()
+    end)
+    if not success then
+        warn("Failed to load script from URL: " .. result)
+    end
+end
+
+ExecuteButton.MouseButton1Click:Connect(executeScript)
+
+-- Apply rainbow effect to the Border and ToggleButton
+createRainbowEffect(Border)
+createRainbowEffect(ToggleButton)
