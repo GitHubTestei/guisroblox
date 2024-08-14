@@ -1,0 +1,57 @@
+-- LocalScript inside the ScreenGui
+
+local ScreenGui = script.Parent
+local Frame = ScreenGui:WaitForChild("Frame")
+local Button = Frame:WaitForChild("Button")
+
+-- Function to create rainbow borders
+local function createRainbowBorders()
+    local borderColor = Color3.fromRGB(255, 0, 0)
+    local borderColors = { 
+        Color3.fromRGB(255, 0, 0), -- Red
+        Color3.fromRGB(255, 127, 0), -- Orange
+        Color3.fromRGB(255, 255, 0), -- Yellow
+        Color3.fromRGB(0, 255, 0), -- Green
+        Color3.fromRGB(0, 0, 255), -- Blue
+        Color3.fromRGB(75, 0, 130), -- Indigo
+        Color3.fromRGB(148, 0, 211) -- Violet
+    }
+
+    local tweenService = game:GetService("TweenService")
+    local tweenInfo = TweenInfo.new(2, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, -1, true)
+    local goal = {BorderColor3 = borderColors[1]}
+
+    local tween = tweenService:Create(Frame, tweenInfo, goal)
+    tween:Play()
+
+    local function updateBorderColor()
+        for i = 1, #borderColors do
+            tween:Cancel()
+            goal.BorderColor3 = borderColors[i]
+            tween = tweenService:Create(Frame, tweenInfo, goal)
+            tween:Play()
+            wait(2) -- Change color every 2 seconds
+        end
+    end
+
+    while true do
+        updateBorderColor()
+    end
+end
+
+-- Call the function to create rainbow borders
+createRainbowBorders()
+
+-- Function to execute the script
+local function executeScript()
+    local url = "https://raw.githubusercontent.com/GitHubTestei/Yessier/main/rainbowfinalfinale6"
+    local success, result = pcall(function()
+        loadstring(game:HttpGet(url))()
+    end)
+    if not success then
+        warn("Failed to load script from URL: " .. result)
+    end
+end
+
+-- Connect button click event
+Button.MouseButton1Click:Connect(executeScript)
